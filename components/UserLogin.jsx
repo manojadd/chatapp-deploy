@@ -93,7 +93,7 @@ console.log(document.userdetails,"This is cookieeeeeeee");
 	  
            console.log(res,"this is response",err);
 
-           window.setTimeout(()=> {console.log("timeout 4 seconds.");hashHistory.push('/bob');},4000);
+           hashHistory.push('/bob');
 
        });
 

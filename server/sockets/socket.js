@@ -37,12 +37,10 @@ module.exports = function(io, socket) {
     socket.on('newChannel', newChannel);
 
     function newChannel(username, projectName, channelName) {
-        console.log("add channel : ", username, projectName, channelName);
+        console.log("newChannelEvent parameters : ", username, projectName, channelName);
         let channel = projectName + '#' + channelName;
         UserInfo.update({ username: username }, { $push: { channelList: channel } }, function(err, reply) {
-            console.log(channel,"channeeeeeelll");
             ChannelInfo.findOne({ channelName: channel }, function(err, reply) {
-                console.log('test inside findOne', reply);
                 if (reply == null) {
                     let c = new ChannelInfo({
                         channelName: channel,
@@ -50,7 +48,7 @@ module.exports = function(io, socket) {
                     });
 
                     c.save(function(err, reply) {
-                        console.log(reply);
+                        console.log('',reply);
                         let pn = projectName + "#" + channelName;
                         let a = "lat." + pn;
                         var obj = {};
@@ -231,27 +229,27 @@ module.exports = function(io, socket) {
     }
 
     socket.on('login', function(usrname, projectName) {
-	console.log("first line onlt",usrname);
+        console.log("first line onlt", usrname);
         let lat = null;
         let loginTime = new Date().getTime();
         console.log("currentTime", loginTime);
-        console.log('========',usrname,'========', projectName, '========', "Current User");
+        console.log('========', usrname, '========', projectName, '========', "Current User");
         LatList.findOne({ username: usrname }, function(err, res) {
-               // console.log(res.lat, "lat defined or not");
-               if(res!=null){
-                lat = res.lat;
-}
+                // console.log(res.lat, "lat defined or not");
+                if (res != null) {
+                    lat = res.lat;
+                }
             })
             //search the DB for username
         UserInfo.findOne({ username: usrname }, function(err, reply) {
-            console.log("This is reply",reply);
-            console.log("This is error on fetching channels",err);
+            console.log("This is reply", reply);
+            console.log("This is error on fetching channels", err);
             reply.channelList = reply.channelList.filter((item, i) => {
                 if ((item.split('#'))[0] === projectName) {
                     return item;
                 }
             });
-            console.log("This is reply.channelList",reply.channelList);
+            console.log("This is reply.channelList", reply.channelList);
             async.each(reply.channelList, function(item, callback) {
                 console.log(item);
                 sub.subscribe(item);
