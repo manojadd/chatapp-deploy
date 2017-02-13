@@ -13,6 +13,7 @@ import Subheader from 'material-ui/Subheader';
 import { Grid, Row, Col} from 'react-flexbox-grid/lib';
 let SelectableList = makeSelectable(List);
 injectTapEventPlugin();
+import cookie from 'react-cookie';
 
 
 export default class ChannelList extends React.Component{
@@ -49,10 +50,7 @@ export default class ChannelList extends React.Component{
   }
 
   handleSubmit(){
-    console.log(this.state.channelName);
-    let a=document.userdetails.split("#");
-    console.log(a,"Cookieeeeeee")
-    this.props.socket.emit('newChannel', a[0],a[1], this.state.channelName);
+    this.props.socket.emit('newChannel', cookie.load('userId'),cookie.load('projectName'), this.state.channelName);
     this.setState({open:false,channelName:""})
   }
 
@@ -100,7 +98,7 @@ export default class ChannelList extends React.Component{
        <Grid style={{height:'100%',width:"100%"}}>
           <Row style={{width:"100%"}}>
             <Col xs={12} sm={12} md={12} lg={12} style={{height:'100%',width:"100%"}}>
-       <Subheader style={{fontSize:"18px"}}>Channels<IconButton style={{marginLeft:"100px"}}><AddCircle onTouchTap={this.handleAddChannel}/></IconButton></Subheader>
+       <Subheader style={{fontSize:"18px"}}>Channels<IconButton style={{marginLeft:"100px"}}  onTouchTap={this.handleAddChannel}><AddCircle/></IconButton></Subheader>
       </Col>
           </Row>
           <Row style={{width:"100%"}}>

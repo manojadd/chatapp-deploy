@@ -229,7 +229,7 @@ module.exports = function(io, socket) {
     }
 
     socket.on('login', function(usrname, projectName) {
-        console.log("first line onlt", usrname);
+        console.log("first line onlt", usrname,projectName);
         let lat = null;
         let loginTime = new Date().getTime();
         console.log("currentTime", loginTime);

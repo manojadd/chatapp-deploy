@@ -8,16 +8,17 @@ import Header from './Header.jsx';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 import { Grid, Row, Col} from 'react-flexbox-grid/lib';
+import cookie from 'react-cookie';
+
 
 export default class Bob extends React.Component{
       constructor(props){
         super(props);
-        let a=document.userdetails.split("#");
-console.log("this is whole cookie in constructor: ",document.userdetails);
+        console.log(cookie.load('userId'),cookie.load('projectName'));
         this.state={
-          userName:a[0],
+          userName:cookie.load('userId'),
           channelsList:[],
-          currentChannel:document.userdetails.split("#")[1]+"#general",
+          currentChannel:cookie.load('projectName')+"#general",
           unreadCount:{},
           lat:{},
           socket:null,
@@ -31,13 +32,12 @@ console.log("this is whole cookie in constructor: ",document.userdetails);
         //this.getChannelsInProject=this.getChannelsInProject.bind(this);
       }
        componentDidMount(){
-         console.log(document.userdetails,"cookie");
          if(this.state.userName==""){
 
           
 
          }else{
-          var socket=io('http://172.23.238.193:8000');
+          var socket=io('http://172.23.238.164:8000');
            let that=this;
               socket.on('channelList', function (list,unreadCount,lat) {
                 that.setState({channelsList:list,unreadCount:unreadCount,lat:lat,loggedIn:true});
@@ -70,7 +70,7 @@ console.log("this is whole cookie in constructor: ",document.userdetails);
               socket.on('updatedChannelList', function(channel){
                that.setState({channelsList: channel});
              });
-               socket.emit("login",this.state.userName,(document.userdetails.split('#'))[1]);
+               socket.emit("login",this.state.userName,cookie.load('projectName'));
               this.setState({socket:socket});
          }
               

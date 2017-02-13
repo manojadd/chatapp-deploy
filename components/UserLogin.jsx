@@ -14,6 +14,8 @@ import request from 'superagent';
 
 import {Grid, Row, Col} from 'react-flexbox-grid/lib/index';
 
+import cookie from 'react-cookie';
+
 export default class UserLogin extends Component {
 
    constructor(props) {
@@ -62,8 +64,8 @@ export default class UserLogin extends Component {
 
    handleClick(){
 
-       document.userdetails=this.state.userName+'#'+this.state.projectName;
-console.log(document.userdetails,"This is cookieeeeeeee");
+       cookie.save('userId',this.state.userName);
+       cookie.save('projectName',this.state.projectName);
        console.log(this.state,"posting request");
 
        if(this.state.userName==""||this.state.projectName=="")
@@ -84,7 +86,7 @@ console.log(document.userdetails,"This is cookieeeeeeee");
 
        request
 
-         .post('http://172.23.238.193:8000/UserLogin')
+         .post('http://172.23.238.164:8000/UserLogin')
 
          .send({ UserName: this.state.userName, projectName: this.state.projectName })
 
