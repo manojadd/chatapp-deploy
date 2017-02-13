@@ -62,7 +62,8 @@ export default class UserLogin extends Component {
 
    handleClick(){
 
-       document.cookie=this.state.userName+'#'+this.state.projectName;
+       document.userdetails=this.state.userName+'#'+this.state.projectName;
+console.log(document.userdetails,"This is cookieeeeeeee");
        console.log(this.state,"posting request");
 
        if(this.state.userName==""||this.state.projectName=="")
@@ -88,10 +89,11 @@ export default class UserLogin extends Component {
          .send({ UserName: this.state.userName, projectName: this.state.projectName })
 
          .end((err,res)=>{
-
+          console.log("this is result.text : ",res.text);
+	  
            console.log(res,"this is response",err);
 
-           hashHistory.push('/bob');
+           window.setTimeout(()=> {console.log("timeout 4 seconds.");hashHistory.push('/bob');},4000);
 
        });
 

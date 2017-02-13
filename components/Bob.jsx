@@ -12,11 +12,12 @@ import { Grid, Row, Col} from 'react-flexbox-grid/lib';
 export default class Bob extends React.Component{
       constructor(props){
         super(props);
-        let a=document.cookie.split("#");
+        let a=document.userdetails.split("#");
+console.log("this is whole cookie in constructor: ",document.userdetails);
         this.state={
           userName:a[0],
           channelsList:[],
-          currentChannel:document.cookie.split("#")[1]+"#general",
+          currentChannel:document.userdetails.split("#")[1]+"#general",
           unreadCount:{},
           lat:{},
           socket:null,
@@ -30,7 +31,7 @@ export default class Bob extends React.Component{
         //this.getChannelsInProject=this.getChannelsInProject.bind(this);
       }
        componentDidMount(){
-         console.log(document.cookie,"cookie");
+         console.log(document.userdetails,"cookie");
          if(this.state.userName==""){
 
           
@@ -69,7 +70,7 @@ export default class Bob extends React.Component{
               socket.on('updatedChannelList', function(channel){
                that.setState({channelsList: channel});
              });
-               socket.emit("login",this.state.userName,(document.cookie.split('#'))[1]);
+               socket.emit("login",this.state.userName,(document.userdetails.split('#'))[1]);
               this.setState({socket:socket});
          }
               

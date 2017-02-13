@@ -50,7 +50,7 @@ export default class ChannelList extends React.Component{
 
   handleSubmit(){
     console.log(this.state.channelName);
-    let a=document.cookie.split("#");
+    let a=document.userdetails.split("#");
     console.log(a,"Cookieeeeeee")
     this.props.socket.emit('newChannel', a[0],a[1], this.state.channelName);
     this.setState({open:false,channelName:""})

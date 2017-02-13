@@ -52,7 +52,7 @@ app.post('/UserLogin', function(req, res) {
                 channelList: req.body.projectName + "#general"
             });
             user.save((err, reply) => { //after user is saved , save the channel
-
+               console.log("Result of saving user:",err);
 
                 let channel = new ChannelInfo({
                     channelName: req.body.projectName + "#general",

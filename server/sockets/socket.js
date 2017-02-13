@@ -231,23 +231,27 @@ module.exports = function(io, socket) {
     }
 
     socket.on('login', function(usrname, projectName) {
+	console.log("first line onlt",usrname);
         let lat = null;
         let loginTime = new Date().getTime();
         console.log("currentTime", loginTime);
-        console.log(usrname, projectName, "Current User");
-        LatList.find({ username: usrname }, function(err, res) {
-                console.log(res, "lat defined or not");
-                lat = res[0].lat;
+        console.log('========',usrname,'========', projectName, '========', "Current User");
+        LatList.findOne({ username: usrname }, function(err, res) {
+               // console.log(res.lat, "lat defined or not");
+               if(res!=null){
+                lat = res.lat;
+}
             })
             //search the DB for username
         UserInfo.findOne({ username: usrname }, function(err, reply) {
-
+            console.log("This is reply",reply);
+            console.log("This is error on fetching channels",err);
             reply.channelList = reply.channelList.filter((item, i) => {
                 if ((item.split('#'))[0] === projectName) {
                     return item;
                 }
             });
-            console.log(reply.channelList);
+            console.log("This is reply.channelList",reply.channelList);
             async.each(reply.channelList, function(item, callback) {
                 console.log(item);
                 sub.subscribe(item);
@@ -294,3 +298,4 @@ module.exports = function(io, socket) {
         socket.emit("updateUnread", currentChannel, prevChannel, d);
     });
 }
+var mongoose = require('mongoose');

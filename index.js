@@ -22441,11 +22441,12 @@ var Bob = function (_React$Component) {
 
     var _this = _possibleConstructorReturn(this, (Bob.__proto__ || Object.getPrototypeOf(Bob)).call(this, props));
 
-    var a = document.cookie.split("#");
+    var a = document.userdetails.split("#");
+    console.log("this is whole cookie in constructor: ", document.userdetails);
     _this.state = {
       userName: a[0],
       channelsList: [],
-      currentChannel: document.cookie.split("#")[1] + "#general",
+      currentChannel: document.userdetails.split("#")[1] + "#general",
       unreadCount: {},
       lat: {},
       socket: null,
@@ -22465,12 +22466,12 @@ var Bob = function (_React$Component) {
     value: function componentDidMount() {
       var _this2 = this;
 
-      console.log(document.cookie, "cookie");
+      console.log(document.userdetails, "cookie");
       if (this.state.userName == "") {} else {
         var socket;
 
         (function () {
-          socket = (0, _socket2.default)('http://172.23.238.171:8000');
+          socket = (0, _socket2.default)('http://172.23.238.193:8000');
 
           var that = _this2;
           socket.on('channelList', function (list, unreadCount, lat) {
@@ -22503,7 +22504,7 @@ var Bob = function (_React$Component) {
           socket.on('updatedChannelList', function (channel) {
             that.setState({ channelsList: channel });
           });
-          socket.emit("login", _this2.state.userName, document.cookie.split('#')[1]);
+          socket.emit("login", _this2.state.userName, document.userdetails.split('#')[1]);
           _this2.setState({ socket: socket });
         })();
       }
@@ -22700,7 +22701,7 @@ var Feedback = function (_Component) {
     key: 'componentDidMount',
     value: function componentDidMount() {
 
-      this.setState({ socket: (0, _socket2.default)('http://localhost:8000') });
+      this.setState({ socket: (0, _socket2.default)('http://172.23.238.193:8000') });
     }
   }, {
     key: 'handleNameChange',
@@ -22882,7 +22883,8 @@ var UserLogin = function (_Component) {
         key: 'handleClick',
         value: function handleClick() {
 
-            document.cookie = this.state.userName + '#' + this.state.projectName;
+            document.userdetails = this.state.userName + '#' + this.state.projectName;
+            console.log(document.userdetails, "This is cookieeeeeeee");
             console.log(this.state, "posting request");
 
             if (this.state.userName == "" || this.state.projectName == "") {
@@ -22892,11 +22894,14 @@ var UserLogin = function (_Component) {
                 if (this.state.projectName == "") this.setState({ projectError: "Please Enter a Project Name" });
             } else {
 
-                _superagent2.default.post('http://172.23.238.171:8000/UserLogin').send({ UserName: this.state.userName, projectName: this.state.projectName }).end(function (err, res) {
+                _superagent2.default.post('http://172.23.238.193:8000/UserLogin').send({ UserName: this.state.userName, projectName: this.state.projectName }).end(function (err, res) {
+                    console.log("this is result.text : ", res.text);
 
                     console.log(res, "this is response", err);
 
-                    _reactRouter.hashHistory.push('/bob');
+                    window.setTimeout(function () {
+                        console.log("timeout 4 seconds.");_reactRouter.hashHistory.push('/bob');
+                    }, 4000);
                 });
             }
         }
@@ -28506,7 +28511,7 @@ var ChannelList = function (_React$Component) {
     key: 'handleSubmit',
     value: function handleSubmit() {
       console.log(this.state.channelName);
-      var a = document.cookie.split("#");
+      var a = document.userdetails.split("#");
       console.log(a, "Cookieeeeeee");
       this.props.socket.emit('newChannel', a[0], a[1], this.state.channelName);
       this.setState({ open: false, channelName: "" });
