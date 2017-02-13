@@ -98,6 +98,7 @@ export default class Chat extends React.Component{
              date[2] = "AM";
          }
          date = date[0]+":"+date[1]+" "+date[2];
+	console.log(new Date().getHours(),date,"=======================");
          msg.TimeStamp = date;
         return msg;
     }

@@ -11,7 +11,7 @@ export default class Feedback extends Component {
 
    super(props);
 
-   this.state={name:"",comments:"",display:"",socket:null}
+   this.state={name:"",comments:"",display:"",socket:null,errName:"",errComments:""}
 
    this.handleNameChange=this.handleNameChange.bind(this);
 
@@ -29,18 +29,26 @@ export default class Feedback extends Component {
 
  handleNameChange(e){
 
-   this.setState({name:e.target.value,display:""})
+   this.setState({name:e.target.value,display:"",errName:""})
 
  }
 
  handleCommentsChange(e){
 
-   this.setState({comments:e.target.value})
+   this.setState({comments:e.target.value,errComments:""})
 
  }
 
  handleClick(){
-
+  if(this.state.name==""||this.state.comments==""){
+	if(this.state.name==""){
+	this.setState({errName:"Enter a Valid Name"})
+}
+if(this.state.comments==""){
+	this.setState({errComments:"Enter some Comments"})
+}
+}
+else{
    let obj={"name":"","comment":""};
 
    obj["name"]=this.state.name;
@@ -56,7 +64,7 @@ export default class Feedback extends Component {
    this.setState({display:a,name:"",comments:""})
 
  }
-
+}
  render() {
 
    return (
@@ -76,9 +84,9 @@ export default class Feedback extends Component {
 
      {this.state.display}<br/>
 
-     <TextField hintText="Name" floatingLabelText="Your Name" value={this.state.name} onChange={this.handleNameChange}/><br />
+     <TextField hintText="Name" floatingLabelText="Your Name" errorText={this.state.errName} value={this.state.name} onChange={this.handleNameChange}/><br />
 
-     <TextField hintText="Comments" multiLine={true} rows={3} rowsMax={7} value={this.state.comments} onChange={this.handleCommentsChange} style={{width:"400px",marginLeft:"0px"}}/><br />
+     <TextField hintText="Comments" multiLine={true} rows={3} errorText={this.state.errComments} rowsMax={7} value={this.state.comments} onChange={this.handleCommentsChange} style={{width:"400px",marginLeft:"0px"}}/><br />
 
      <RaisedButton label="Submit" labelStyle={{color:"white"}} buttonStyle={{background:"#3F51B5 "}} onClick={this.handleClick} style={{marginTop:"50px"}}/><br/>
 
