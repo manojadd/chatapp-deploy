@@ -37,7 +37,7 @@ export default class Bob extends React.Component{
           
 
          }else{
-          var socket=io('http://172.23.238.164:8000');
+          var socket=io('http://172.23.238.193:8000');
            let that=this;
               socket.on('channelList', function (list,unreadCount,lat) {
                 that.setState({channelsList:list,unreadCount:unreadCount,lat:lat,loggedIn:true});
